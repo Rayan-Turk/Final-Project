@@ -1,0 +1,35 @@
+html, body{
+    margin: 0px;
+    background-color: black;
+}
+.topbar{
+    height: 70px;
+    background-color: rgb(50, 50, 50);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgb(117, 117, 117);
+}
+.navlink{
+    font-size: large;
+    color: white;
+    border: 2px solid rgb(142, 142, 142);
+    border-radius: 5px;
+    margin: 8px;
+    padding: 10px;
+    text-decoration: none;
+}
+.nav.active{
+    font-size: large;
+    color: rgb(0, 120, 8);
+    border: 2px solid rgb(0, 120, 8);
+    border-radius: 5px;
+    margin: 8px;
+    padding: 10px;
+    text-decoration: none;
+}
+.title{
+    font-size: large;
+    color: white;
+    margin: 8px;
+}
