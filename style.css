@@ -5,21 +5,25 @@ html, body{
     color: #EAEAEA;
 }
 .topbar{
-    height: 70px;
+    min-height: 70px;
+    padding: 0 10px;
     background-color: rgb(50, 50, 50);
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid rgb(117, 117, 117);
 }
 .navlink{
-    font-size: large;
-    color: white;
-    border: 2px solid rgb(142, 142, 142);
-    border-radius: 5px;
-    margin: 8px;
-    padding: 10px;
-    text-decoration: none;
+  min-height: 44px;
+  font-size: large;
+  color: white;
+  border: 2px solid rgb(142, 142, 142);
+  border-radius: 5px;
+  margin: 8px;
+  padding: 10px;
+  text-decoration: none;
+ 
 }
 .navlink.active{
     font-size: large;
@@ -57,7 +61,8 @@ margin: 30px 0 30px;
     background-color: #2A2A2A;
     font-size: 20px;
     width: 400px;
-    height: 180px;
+    min-height: 180px;
+    height: auto;
     border-radius: 16px;
     padding: 20px;
     display: flex;
@@ -71,13 +76,14 @@ margin: 30px 0 30px;
   margin-top: 20px;
 }
 .navigation{
-    background-color: #2E7D32;
-    border-color: #2E7D32;
-    border: 2px solid rgb(0, 120, 8);
-    border-radius: 10px;
-    padding: 10px;
-    color: white;
-    text-decoration: none;
+  min-height: 44px;
+  background-color: #2E7D32;
+  border-color: #2E7D32;
+  border: 2px solid rgb(0, 120, 8);
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
 }
 .navigation:hover {
   background-color: rgb(35, 90, 37);
@@ -92,3 +98,26 @@ margin: 30px 0 30px;
     max-width: 400px;
   }
 }
+@media (max-width: 768px) {
+  .title {
+    font-size: 26px;
+    text-align: center;
+    width: 100%;
+  }
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  .navlink {
+    font-size: 14px;
+    padding: 8px;
+    margin: 5px;
+  }
+  .section {
+    margin: 15px;
+    padding: 15px;
+  }
+}
+
