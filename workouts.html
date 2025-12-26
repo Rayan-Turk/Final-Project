@@ -17,5 +17,43 @@
             <a class="navlink" href="history.html"><i class="fa-solid fa-clock"></i> History</a>
         </nav>
     </header>
+    <section class="section">
+        <div class="header">
+            <div class="text-section">
+                <h1>Available Workouts</h1>
+                <h4>Add workouts to your plan. Then go to Planner to run them.</h4>
+            </div>
+            <div class="customize-section">
+                <select id="categoryFilter" class="select">
+                    <option value="">All Muscle Groups</option>
+                    <option value="chest">Chest</option>
+                    <option value="back">Back</option>
+                    <option value="shoulders">Shoulders</option>
+                    <option value="arms">Biceps</option>
+                    <option value="arms">Triceps</option>
+                    <option value="legs">Legs</option>
+                    <option value="cardio">Cardio</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search Workout...">
+                <a class="navlink" href="planner.html">Go To Planner</a>
+            </div>
+        </div>
+        <div class="workout-container">
+            <div class="workout-card">
+                <img src="" alt="Workout image" class="workout-image">
+                <div class="workout-content">
+                    <div class="workout-header">
+                        <h2 class="workout-name">Workout Name Example</h2>
+                        <span class="workout-category">Category</span>
+                        <a href="details.html" class="details-link">Details</a>
+                    </div>
+                    <div class="workout-footer">
+                        <p class="workout-reps">3 reps of 12 reps</p>
+                        <button class="add-btn">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
