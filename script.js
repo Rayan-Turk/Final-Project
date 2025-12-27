@@ -90,18 +90,28 @@ const workouts = [
         id: 30, name: "Battle Ropes", category: "Cardio", image: "images/battle ropes.png"
     }
 ];
-const container = document.getElementById("workoutContainer");
-const template = document.getElementById("workoutTemplate");
+const filter = document.getElementById("categoryFilter");
+filter.addEventListener("change", () => {
+    const selectedCategory = filter.value;
+    let filteredWorkouts = selectedCategory === "all" ? workouts : workouts.filter(workout => workout.category === selectedCategory);
 
-template.remove();
-
-workouts.forEach(workout => {
-    const card = template.cloneNode(true);
-    
-    card.querySelector(".workout-name").textContent = workout.name;
-    card.querySelector(".workout-category").textContent = workout.category;
-    card.querySelector(".workout-image").src = workout.image;
-    card.querySelector(".workout-image").alt = workout.name;
-
-  container.appendChild(card);
+    renderWorkouts(filteredWorkouts)
 });
+renderWorkouts(workouts);
+function renderWorkouts(filteredWorkouts){
+    const container = document.getElementById("workoutContainer");
+    const template = document.getElementById("workoutTemplate");
+
+    container.innerHTML= "";
+    
+    filteredWorkouts.forEach(workout => {
+        const card = template.cloneNode(true);
+
+        card.querySelector(".workout-name").textContent = workout.name;
+        card.querySelector(".workout-category").textContent = workout.category;
+        card.querySelector(".workout-image").src = workout.image;
+        card.querySelector(".workout-image").alt = workout.name;
+
+        container.appendChild(card);
+    });
+}
