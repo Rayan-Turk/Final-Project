@@ -90,18 +90,24 @@ const workouts = [
         id: 30, name: "Battle Ropes", category: "Cardio", image: "images/battle ropes.png"
     }
 ];
+const container = document.getElementById("workoutContainer");
+const template = document.getElementById("workoutTemplate");
 const filter = document.getElementById("categoryFilter");
-filter.addEventListener("change", () => {
-    const selectedCategory = filter.value;
-    let filteredWorkouts = selectedCategory === "all" ? workouts : workouts.filter(workout => workout.category === selectedCategory);
+const input= document.getElementById("searchInput");
 
-    renderWorkouts(filteredWorkouts)
-});
+filter.addEventListener("change",applyFilters);
+input.addEventListener("input", applyFilters);
+function applyFilters(){
+    const selectedCategory = filter.value;
+    const inputText = input.value.toLowerCase();
+
+    let filteredWorkouts = selectedCategory === "all" ? workouts : workouts.filter(workout => workout.category === selectedCategory);
+    filteredWorkouts = inputText === "" ? filteredWorkouts : filteredWorkouts.filter(workout => workout.name.toLowerCase().startsWith(inputText));
+
+    renderWorkouts(filteredWorkouts);
+}
 renderWorkouts(workouts);
 function renderWorkouts(filteredWorkouts){
-    const container = document.getElementById("workoutContainer");
-    const template = document.getElementById("workoutTemplate");
-
     container.innerHTML= "";
     
     filteredWorkouts.forEach(workout => {
