@@ -17,5 +17,39 @@
             <a class="navlink" href="history.html"><i class="fa-solid fa-clock"></i> History</a>
         </nav>
     </header>
+    <section class="section">
+        <div class="planner-header">
+            <div>
+                <h1>Add, reorder or remove workouts then press start.</h1>
+                <h2>Completing saves plan to History.</h2>
+            </div>
+            <div class="planner-options">
+                <a class="navlink" href="workouts.html">Add More Workouts</a>
+                <button id="clear-btn">Delete Current plan</button>
+            </div>
+        </div>
+        <div id="main-planner-design">
+            <div class="workouts-part">
+                <h2>Current Plan</h2>
+                <p id="workouts-counter">number of workouts : </p>
+                <div id="planner-workout-card">
+                    <div class="planner-workout-info">
+                        <h3 id="planner-workout-name">Workout Name</h3>
+                        <div class="workout-info">
+                            <p id="planner-workout-category">Category</p>
+                            <p>-</p>
+                            <p>3 sets of 12 reps</p>
+                        </div>
+                    </div>
+                    <div class="planner-workout-actions">
+                        <button id="up-btn">Up</button>
+                        <button id="down-btn">Down</button>
+                        <button id="remove-btn">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -305,7 +305,20 @@ if (window.location.pathname.includes("workouts.html")){
     const template = document.getElementById("workoutTemplate");
     const filter = document.getElementById("categoryFilter");
     const input= document.getElementById("searchInput");
+    const counter = document.getElementById("plan-counter");
+    const clearBtn = document.getElementById("clear-btn");
 
+    clearBtn.addEventListener("click", () => {
+        localStorage.clear();
+        updatePlanCounter();
+    });
+
+    function updatePlanCounter() {
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];
+        counter.textContent = `Number Of Workouts In Plan : ${plan.length}`;
+    }
+
+    updatePlanCounter();
     filter.addEventListener("change",applyFilters);
     input.addEventListener("input", applyFilters);
     function applyFilters(){
@@ -333,7 +346,7 @@ if (window.location.pathname.includes("workouts.html")){
                 if(!plan.some(w => w.id === workout.id)){
                     plan.push(workout);
                     localStorage.setItem("plan", JSON.stringify(plan));
-                    alert("added");
+                    updatePlanCounter();
                 }
             });
             container.appendChild(card);
@@ -364,8 +377,28 @@ else if (window.location.pathname.includes("details.html")){
             if(!plan.some(w => w.id === workout.id)){
                 plan.push(workout);
                 localStorage.setItem("plan", JSON.stringify(plan));
-                alert("added");
             }
         });
     }
+    
+}
+else if (window.location.pathname.includes("planner.html")){
+    const plan = JSON.parse(localStorage.getItem("plan")) || [];
+
+    function renderWorkouts(plan){
+        const workoutContainer = document.querySelector(".workouts-part");
+        const template = document.getElementById("planner-workout-card");
+
+        template.remove();
+
+        plan.forEach(workout => {
+            const card = template.cloneNode(true);
+
+            card.querySelector("#planner-workout-name").textContent = workout.name;
+            card.querySelector("#planner-workout-category").textContent = workout.category;
+            
+            workoutContainer.appendChild(card);
+        });
+    }
+    renderWorkouts(plan);
 }

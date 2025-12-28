@@ -164,6 +164,7 @@ font-size: 40px;
 .text-section h4{
   font-size: 18px;
 }
+
 .customize-section{
   display: flex;
   align-items: center;
@@ -190,6 +191,24 @@ font-size: 40px;
 }
 #searchInput::placeholder{
   color: white;
+}
+.plan-section{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+#clear-btn{
+  color: white;
+  background-color: #bb0b0b;
+  border: 2px solid rgb(149, 16, 16);
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+#clear-btn:hover{
+  background-color: #710808;
 }
 .workout-container{
   display: grid;
@@ -319,4 +338,87 @@ font-size: 40px;
   display: block;
   margin: 40px auto 0 auto;
   font-size: large;
+}
+.planner-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#main-planner-design{
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.workouts-part{
+  background-color: #2A2A2A;
+  border-radius: 16px;
+  gap: 16px;
+  width: 50%;
+  padding-bottom: 10px;
+}
+#main-planner-design h2{
+  padding: 20px 0 0 20px;
+}
+#workouts-counter{
+padding: 0 0 0 20px;
+font-size: large;
+}
+#planner-workout-card{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 15px 0 15px;
+  margin: 15px;
+  border: 2px solid rgb(142, 142, 142);
+  border-radius: 16px;
+}
+.planner-workout-info{
+  display: flex;
+  flex-direction: column;
+}
+#planner-workout-name{
+  margin: 5px 0 5px 0;
+}
+.workout-info{
+  display: flex;
+  gap: 10px;
+}
+.workout-info p{
+  margin: 5px 0 5px 0;
+}
+.planner-workout-actions{
+  display: flex;
+  gap: 10px;
+}
+.planner-workout-actions button{
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+#remove-btn{
+  color: white;
+  background-color: #bb0b0b;
+  border: 2px solid rgb(149, 16, 16);
+  transition: background-color 0.25s ease;
+}
+#remove-btn:hover{
+  background-color: #710808;
+}
+#up-btn{
+  color: white;
+  border: 2px solid rgb(142, 142, 142);
+  background: none;
+}
+#up-btn:hover{
+    background-color: rgb(83, 83, 83);
+}
+#down-btn{
+  color: white;
+  border: 2px solid rgb(142, 142, 142);
+  background: none;
+}
+#down-btn:hover{
+    background-color: rgb(83, 83, 83);
 }
