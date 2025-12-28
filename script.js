@@ -383,10 +383,8 @@ else if (window.location.pathname.includes("details.html")){
     
 }
 else if (window.location.pathname.includes("planner.html")){
-    
     const counter = document.getElementById("workouts-counter");
     const clearBtn = document.getElementById("clear-btn");
-
 
     function renderWorkouts(){
         let plan = JSON.parse(localStorage.getItem("plan")) || [];
@@ -402,7 +400,13 @@ else if (window.location.pathname.includes("planner.html")){
 
             card.querySelector("#planner-workout-name").textContent = workout.name;
             card.querySelector("#planner-workout-category").textContent = workout.category;
-            
+            const removeBtn = card.querySelector("#remove-btn");
+            removeBtn.addEventListener("click", () => {
+                plan = plan.filter(w => w.id !== workout.id)
+                localStorage.setItem("plan", JSON.stringify(plan));
+                updatePlanCounter();
+                renderWorkouts();
+            })
             workoutContainer.appendChild(card);
         });
     }
