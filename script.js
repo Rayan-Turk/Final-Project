@@ -301,38 +301,44 @@ const workouts = [
 ];
 
 if (window.location.pathname.includes("workouts.html")){
-const container = document.getElementById("workoutContainer");
-const template = document.getElementById("workoutTemplate");
-const filter = document.getElementById("categoryFilter");
-const input= document.getElementById("searchInput");
+    const container = document.getElementById("workoutContainer");
+    const template = document.getElementById("workoutTemplate");
+    const filter = document.getElementById("categoryFilter");
+    const input= document.getElementById("searchInput");
 
-filter.addEventListener("change",applyFilters);
-input.addEventListener("input", applyFilters);
-function applyFilters(){
-    const selectedCategory = filter.value;
-    const inputText = input.value.toLowerCase();
-
-    let filteredWorkouts = selectedCategory === "all" ? workouts : workouts.filter(workout => workout.category === selectedCategory);
-    filteredWorkouts = inputText === "" ? filteredWorkouts : filteredWorkouts.filter(workout => workout.name.toLowerCase().startsWith(inputText));
-
-    renderWorkouts(filteredWorkouts);
-}
-renderWorkouts(workouts);
-function renderWorkouts(filteredWorkouts){
-    container.innerHTML= "";
-    
-    filteredWorkouts.forEach(workout => {
-        const card = template.cloneNode(true);
-
-        card.querySelector(".workout-name").textContent = workout.name;
-        card.querySelector(".workout-category").textContent = workout.category;
-        card.querySelector(".workout-image").src = workout.image;
-        card.querySelector(".workout-image").alt = workout.name;
-        card.querySelector(".details-link").href = `details.html?id=${workout.id}`;
-
-        container.appendChild(card);
-    });
-}
+    filter.addEventListener("change",applyFilters);
+    input.addEventListener("input", applyFilters);
+    function applyFilters(){
+        const selectedCategory = filter.value;
+        const inputText = input.value.toLowerCase();
+  
+        let filteredWorkouts = selectedCategory === "all" ? workouts : workouts.filter(workout => workout.category === selectedCategory);
+        filteredWorkouts = inputText === "" ? filteredWorkouts : filteredWorkouts.filter(workout => workout.name.toLowerCase().startsWith(inputText));
+        
+        renderWorkouts(filteredWorkouts);
+    }
+    renderWorkouts(workouts);
+    function renderWorkouts(filteredWorkouts){
+        container.innerHTML= "";
+        filteredWorkouts.forEach(workout => {
+            const card = template.cloneNode(true);
+            card.querySelector(".workout-name").textContent = workout.name;
+            card.querySelector(".workout-category").textContent = workout.category;
+            card.querySelector(".workout-image").src = workout.image;
+            card.querySelector(".workout-image").alt = workout.name;
+            card.querySelector(".details-link").href = `details.html?id=${workout.id}`;
+            const addBtn = card.querySelector(".add-btn");
+            addBtn.addEventListener("click" , () => {
+                let plan = JSON.parse(localStorage.getItem("plan")) || [];
+                if(!plan.some(w => w.id === workout.id)){
+                    plan.push(workout);
+                    localStorage.setItem("plan", JSON.stringify(plan));
+                    alert("added");
+                }
+            });
+            container.appendChild(card);
+        });
+    }
 }
 else if (window.location.pathname.includes("details.html")){
     const searchParams = new URLSearchParams(window.location.search);
@@ -349,6 +355,17 @@ else if (window.location.pathname.includes("details.html")){
             const li = document.createElement("li");
             li.textContent = step;
             stepsList.appendChild(li);
-        })
+        });
+
+        const addBtn = document.querySelector(".add-btn");
+        addBtn.addEventListener("click" , () => {
+            let plan = JSON.parse(localStorage.getItem("plan")) || [];
+
+            if(!plan.some(w => w.id === workout.id)){
+                plan.push(workout);
+                localStorage.setItem("plan", JSON.stringify(plan));
+                alert("added");
+            }
+        });
     }
 }
