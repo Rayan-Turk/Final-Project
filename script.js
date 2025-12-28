@@ -395,11 +395,33 @@ else if (window.location.pathname.includes("planner.html")){
         workoutCards.forEach(card => card.remove());
 
 
-        plan.forEach(workout => {
+        plan.forEach((workout, index) => {
             const card = template.cloneNode(true);
 
             card.querySelector("#planner-workout-name").textContent = workout.name;
             card.querySelector("#planner-workout-category").textContent = workout.category;
+            
+            const upBtn = card.querySelector("#up-btn");
+            index === 0 ? upBtn.disabled = true : upBtn.disabled = false;
+            
+            upBtn.addEventListener("click", () => {
+                    [plan[index], plan[index - 1]] = [plan[index - 1], plan[index]];
+                    localStorage.setItem("plan", JSON.stringify(plan));
+                    updatePlanCounter();
+                    renderWorkouts();
+            });
+
+            const downBtn = card.querySelector("#down-btn");
+            index === plan.length - 1 ? downBtn.disabled = true : downBtn.disabled = false;
+            
+            downBtn.addEventListener("click", () => {
+                    [plan[index], plan[index + 1]] = [plan[index + 1], plan[index]];
+                    localStorage.setItem("plan", JSON.stringify(plan));
+                    updatePlanCounter();
+                    renderWorkouts();
+                
+            });
+
             const removeBtn = card.querySelector("#remove-btn");
             removeBtn.addEventListener("click", () => {
                 plan = plan.filter(w => w.id !== workout.id)

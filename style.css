@@ -373,6 +373,10 @@ font-size: large;
   border: 2px solid rgb(142, 142, 142);
   border-radius: 16px;
 }
+#planner-workout-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
 .planner-workout-info{
   display: flex;
   flex-direction: column;
