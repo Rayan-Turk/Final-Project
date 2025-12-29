@@ -443,4 +443,64 @@ else if (window.location.pathname.includes("planner.html")){
         updatePlanCounter();
         renderWorkouts();
     });
+    const startbtn = document.getElementById("start-plan-btn");
+    let currentIndex = 0;
+    let done = 0;
+    let skipped = 0;
+    startbtn.addEventListener("click", () => {
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];
+        if(plan.length === 0){
+            alert("No workouts in plan")
+        }else{
+            currentIndex = 0;
+            done = 0;
+            skipped = 0;
+
+            showRunnerUI();
+            loadWorkout();
+        }
+    })
+    function showRunnerUI(){
+        document.getElementById("runner-placeholder").style.display = "none";
+        document.getElementById("runner-card").style.display = "block";
+    }
+    function loadWorkout(){
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];
+
+        if (currentIndex >= plan.length) {
+            document.getElementById("runner-card").style.display = "none";
+            document.getElementById("runner-placeholder").textContent = "Workout Finished";
+            document.getElementById("runner-placeholder").style.display = "block";
+            return;
+        }
+
+        const workout = plan[currentIndex];
+        
+        document.getElementById("runner-workout").textContent = `Workout : ${currentIndex + 1} / ${plan.length}`;
+        document.getElementById("runner-workout-category").textContent = workout.category;
+        document.getElementById("runner-workout-name").textContent = workout.name;
+
+        document.getElementById("done-count").textContent = `Done : ${done}`;
+        document.getElementById("skip-count").textContent = `skipped : ${skipped}`;
+        updateProgressBar()
+    }
+    const doneBtn = document.getElementById("done-btn");
+    doneBtn.addEventListener("click", () => {
+        done++;
+        currentIndex++;
+        loadWorkout();
+    });
+    const skipBtn = document.getElementById("skip-btn");
+    skipBtn.addEventListener("click", () =>{
+        skipped++;
+        currentIndex++;
+        loadWorkout();
+    })
+    function updateProgressBar(){
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];
+        let totalWorkouts = plan.length;
+        let completed = done + skipped;
+        const percent = totalWorkouts === 0 ? 0 : (completed / totalWorkouts) * 100;
+        document.getElementById("progress-bar").style.width = `${percent}%`;
+    }
 }
