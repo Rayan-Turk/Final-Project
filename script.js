@@ -447,8 +447,10 @@ else if (window.location.pathname.includes("planner.html")){
     let currentIndex = 0;
     let done = 0;
     let skipped = 0;
+    let results = [];
     startbtn.addEventListener("click", () => {
         const plan = JSON.parse(localStorage.getItem("plan")) || [];
+        results = [];
         if(plan.length === 0){
             alert("No workouts in plan")
         }else{
@@ -468,9 +470,22 @@ else if (window.location.pathname.includes("planner.html")){
         const plan = JSON.parse(localStorage.getItem("plan")) || [];
 
         if (currentIndex >= plan.length) {
-            document.getElementById("runner-card").style.display = "none";
-            document.getElementById("runner-placeholder").textContent = "Workout Finished";
-            document.getElementById("runner-placeholder").style.display = "block";
+            updateProgressBar();
+            setTimeout(() => {
+                document.getElementById("runner-card").style.display = "none";      
+                document.getElementById("runner-placeholder").textContent = "Workout Finished";            
+                document.getElementById("runner-placeholder").style.display = "block";
+            }, 500)
+            
+
+            let history = JSON.parse(localStorage.getItem("history")) || [];
+            
+            history.push({
+                date: new Date().toLocaleString(),
+                workouts: results
+            });
+            localStorage.setItem("history", JSON.stringify(history));
+            console.log(history);
             return;
         }
 
@@ -482,16 +497,34 @@ else if (window.location.pathname.includes("planner.html")){
 
         document.getElementById("done-count").textContent = `Done : ${done}`;
         document.getElementById("skip-count").textContent = `skipped : ${skipped}`;
-        updateProgressBar()
+        updateProgressBar();
     }
     const doneBtn = document.getElementById("done-btn");
     doneBtn.addEventListener("click", () => {
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];
+
+        results.push({
+            id: plan[currentIndex].id,
+            name: plan[currentIndex].name,
+            category: plan[currentIndex].category,
+            status: "Done"
+        })
+
         done++;
         currentIndex++;
         loadWorkout();
     });
     const skipBtn = document.getElementById("skip-btn");
     skipBtn.addEventListener("click", () =>{
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];
+
+        results.push({
+            id: plan[currentIndex].id,
+            name: plan[currentIndex].name,
+            category: plan[currentIndex].category,
+            status: "Skipped"
+        })
+
         skipped++;
         currentIndex++;
         loadWorkout();
@@ -503,4 +536,15 @@ else if (window.location.pathname.includes("planner.html")){
         const percent = totalWorkouts === 0 ? 0 : (completed / totalWorkouts) * 100;
         document.getElementById("progress-bar").style.width = `${percent}%`;
     }
+    const stopBtn = document.getElementById("stop-btn");
+    stopBtn.addEventListener("click", () => {
+        currentIndex = 0;
+        done = 0;
+        skipped = 0;
+        results = [];
+        updateProgressBar();
+        document.getElementById("runner-card").style.display = "none";
+        document.getElementById("runner-placeholder").textContent = "Workout Cancelled";
+        document.getElementById("runner-placeholder").style.display = "block";
+    })
 }
