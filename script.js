@@ -492,7 +492,6 @@ else if (window.location.pathname.includes("planner.html")){
                 workouts: results
             });
             localStorage.setItem("history", JSON.stringify(history));
-            console.log(history);
             return;
         }
 
@@ -554,4 +553,52 @@ else if (window.location.pathname.includes("planner.html")){
         document.getElementById("runner-placeholder").textContent = "Workout Cancelled";
         document.getElementById("runner-placeholder").style.display = "block";
     })
+}
+else if (window.location.pathname.includes("history.html")){
+    const clearHistoryBtn = document.getElementById("clear-history-btn");
+
+    clearHistoryBtn.addEventListener("click", () => {
+        localStorage.removeItem("history");
+        renderHistory();
+    });
+    
+    function renderHistory(){
+        let history = JSON.parse(localStorage.getItem("history")) || [];
+        const historyContainer = document.getElementById("history-container");
+        const template = document.getElementById("history-card");
+
+        const workoutCards = historyContainer.querySelectorAll("#history-card");
+        workoutCards.forEach(card => card.remove());
+        history.forEach(plan => {
+            const date = plan.date;
+            const workouts = plan.workouts;
+            const doneWorkouts = workouts.filter(workout => workout.status === "Done");
+            const skippedWorkouts = workouts.filter(workout => workout.status === "Skipped");
+            
+            const card = template.cloneNode(true);
+            
+            card.querySelector("#workout-counter").textContent = `${workouts.length} Workouts`;
+            card.querySelector("#history-info").textContent = `Completed at ${date} - Done : ${doneWorkouts.length} - Skipped : ${skippedWorkouts.length}`;
+            const deleteBtn = card.querySelector("#delete-history-btn");
+            deleteBtn.addEventListener("click", () => {
+                history = history.filter(p => p !== plan);
+                localStorage.setItem("history", JSON.stringify(history));
+                renderHistory();
+            });
+
+            const workoutsList = card.querySelector("#history-workouts");
+            const workoutTemplate = card.querySelector("#history-workout");
+            const workoutCards = workoutsList.querySelectorAll("#history-workout");
+            workoutCards.forEach(card => card.remove());
+
+            workouts.forEach(workout => {
+                const card = workoutTemplate.cloneNode(true);
+                card.textContent = `${workout.name} (${workout.category}) - ${workout.status} - 3 sets of 12 reps`;
+
+                workoutsList.appendChild(card);
+            });
+            historyContainer.appendChild(card);
+        })
+    }
+    renderHistory();
 }
