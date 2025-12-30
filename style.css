@@ -542,3 +542,66 @@ font-size: large;
   background-color: #2ecc71;
   transition: width 0.4s ease;
 }
+.history-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#clear-history-btn{
+  color: white;
+  background-color: #bb0b0b;
+  border: 2px solid rgb(149, 16, 16);
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+#clear-history-btn:hover{
+  background-color: #710808;
+}
+#history-card{
+  background-color: #2A2A2A;
+  border-radius: 16px;
+  padding: 20px;
+  margin: 0 0 20px 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#history-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+#history-card-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#workout-counter{
+  margin: 0px;
+}
+#history-info{
+  margin: 5px 0 10px 0;
+}
+#delete-history-btn {
+  color: white;
+  background-color: #bb0b0b;
+  border: 2px solid rgb(149, 16, 16);
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+#delete-history-btn:hover {
+  background-color: #710808;
+}
+#history-workouts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+#history-workout {
+  border: 2px solid rgb(142, 142, 142);
+  border-radius: 16px;
+  padding: 15px;
+  font-size: large;
+  background: rgb(255, 255, 255, 0.1);
+}
