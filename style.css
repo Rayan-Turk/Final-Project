@@ -559,6 +559,14 @@ font-size: large;
 #clear-history-btn:hover{
   background-color: #710808;
 }
+#empty-history-message{
+  text-align: center;
+  padding: 15px 0 15px 15px;
+  margin: 15px;
+  font-size: large;
+  border: 2px solid rgb(142, 142, 142);
+  border-radius: 16px;
+}
 #history-card{
   background-color: #2A2A2A;
   border-radius: 16px;

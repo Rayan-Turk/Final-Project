@@ -299,7 +299,6 @@ const workouts = [
         ]
     }
 ];
-
 if (window.location.pathname.includes("workouts.html")){
     const container = document.getElementById("workoutContainer");
     const template = document.getElementById("workoutTemplate");
@@ -309,7 +308,8 @@ if (window.location.pathname.includes("workouts.html")){
     const clearBtn = document.getElementById("clear-btn");
 
     clearBtn.addEventListener("click", () => {
-        localStorage.clear();
+        localStorage.removeItem("plan");
+        document.querySelectorAll(".add-btn").forEach(btn => btn.textContent = "Add");
         updatePlanCounter();
     });
 
@@ -331,6 +331,10 @@ if (window.location.pathname.includes("workouts.html")){
         renderWorkouts(filteredWorkouts);
     }
     renderWorkouts(workouts);
+    function isInPlan(id) {  
+        const plan = JSON.parse(localStorage.getItem("plan")) || [];   
+        return plan.some(w => w.id === id); 
+    }
     function renderWorkouts(filteredWorkouts){
         container.innerHTML= "";
         filteredWorkouts.forEach(workout => {
@@ -341,7 +345,11 @@ if (window.location.pathname.includes("workouts.html")){
             card.querySelector(".workout-image").alt = workout.name;
             card.querySelector(".details-link").href = `details.html?id=${workout.id}`;
             const addBtn = card.querySelector(".add-btn");
+            if (isInPlan(workout.id)) {
+                addBtn.textContent = "Added";
+            }
             addBtn.addEventListener("click" , () => {
+                addBtn.textContent = "Added";
                 let plan = JSON.parse(localStorage.getItem("plan")) || [];
                 if(!plan.some(w => w.id === workout.id)){
                     plan.push(workout);
@@ -371,7 +379,15 @@ else if (window.location.pathname.includes("details.html")){
         });
 
         const addBtn = document.querySelector(".add-btn");
+        function isInPlan(id) {
+            const plan = JSON.parse(localStorage.getItem("plan")) || [];
+            return plan.some(w => w.id === id);
+        }
+        if (isInPlan(workout.id)) {
+            addBtn.textContent = "Added";
+        }
         addBtn.addEventListener("click" , () => {
+            addBtn.textContent = "Added";
             let plan = JSON.parse(localStorage.getItem("plan")) || [];
 
             if(!plan.some(w => w.id === workout.id)){
@@ -443,7 +459,7 @@ else if (window.location.pathname.includes("planner.html")){
     }
     updatePlanCounter();
     clearBtn.addEventListener("click", () => {
-        localStorage.clear();
+        localStorage.removeItem("plan");
         updatePlanCounter();
         renderWorkouts();
     });
@@ -492,6 +508,8 @@ else if (window.location.pathname.includes("planner.html")){
                 workouts: results
             });
             localStorage.setItem("history", JSON.stringify(history));
+            localStorage.removeItem("plan");
+            setTimeout(renderWorkouts, 500);
             return;
         }
 
@@ -566,9 +584,15 @@ else if (window.location.pathname.includes("history.html")){
         let history = JSON.parse(localStorage.getItem("history")) || [];
         const historyContainer = document.getElementById("history-container");
         const template = document.getElementById("history-card");
+        const emptyMsg = document.getElementById("empty-history-message");
 
         const workoutCards = historyContainer.querySelectorAll("#history-card");
         workoutCards.forEach(card => card.remove());
+
+        if(history.length === 0){
+            emptyMsg.style.display = "block";
+            return;
+        }
         history.forEach(plan => {
             const date = plan.date;
             const workouts = plan.workouts;
