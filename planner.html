@@ -32,6 +32,9 @@
             <div class="workouts-part">
                 <h2>Current Plan</h2>
                 <p id="workouts-counter">number of workouts : </p>
+                <p id="empty-plan-message" style="display:none;">
+                    No workouts in plan. Go to <a href="workouts.html">Workouts</a> to add some.
+                </p>
                 <div id="planner-workout-card">
                     <div class="planner-workout-info">
                         <h3 id="planner-workout-name">Workout Name</h3>
@@ -65,7 +68,7 @@
                         <div class="runner-actions">
                             <button id="done-btn">Done</button>
                             <button id="skip-btn">Skip</button>
-                            <button id="stop-btn">Stop</button>
+                            <button id="cancel-btn">Cancel</button>
                         </div>
                         <div class="runner-progress">
                             <span id="done-count">Done : 0</span>

@@ -390,11 +390,15 @@ else if (window.location.pathname.includes("planner.html")){
         let plan = JSON.parse(localStorage.getItem("plan")) || [];
         const workoutContainer = document.querySelector(".workouts-part");
         const template = document.getElementById("planner-workout-card");
+        const emptyMsg = document.getElementById("empty-plan-message");
 
         const workoutCards = workoutContainer.querySelectorAll("#planner-workout-card");
         workoutCards.forEach(card => card.remove());
 
-
+        if(plan.length === 0){
+            emptyMsg.style.display = "block";
+            return;
+        }
         plan.forEach((workout, index) => {
             const card = template.cloneNode(true);
 
@@ -452,7 +456,10 @@ else if (window.location.pathname.includes("planner.html")){
         const plan = JSON.parse(localStorage.getItem("plan")) || [];
         results = [];
         if(plan.length === 0){
-            alert("No workouts in plan")
+            document.getElementById("runner-placeholder").textContent = "No Workouts in Plan";           
+            setTimeout(() => {
+                document.getElementById("runner-placeholder").textContent = "Press \"Start Plan\" to begin.";
+            }, 1500)
         }else{
             currentIndex = 0;
             done = 0;
@@ -536,8 +543,8 @@ else if (window.location.pathname.includes("planner.html")){
         const percent = totalWorkouts === 0 ? 0 : (completed / totalWorkouts) * 100;
         document.getElementById("progress-bar").style.width = `${percent}%`;
     }
-    const stopBtn = document.getElementById("stop-btn");
-    stopBtn.addEventListener("click", () => {
+    const cancelBtn = document.getElementById("cancel-btn");
+    cancelBtn.addEventListener("click", () => {
         currentIndex = 0;
         done = 0;
         skipped = 0;

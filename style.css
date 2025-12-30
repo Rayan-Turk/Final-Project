@@ -364,6 +364,18 @@ font-size: 40px;
 padding: 0 0 0 20px;
 font-size: large;
 }
+#empty-plan-message{
+  text-align: center;
+  padding: 15px 0 15px 15px;
+  margin: 15px;
+  font-size: large;
+  border: 2px solid rgb(142, 142, 142);
+  border-radius: 16px;
+}
+#empty-plan-message a{
+  text-decoration: none;
+  color: #4CAF50;
+}
 #planner-workout-card{
   display: flex;
   justify-content: space-between;
@@ -503,11 +515,11 @@ font-size: large;
 #skip-btn:hover{
   background-color: rgb(83, 83, 83);
 }
-#stop-btn{
+#cancel-btn{
   background-color: #bb0b0b;
   border: 2px solid rgb(149,16,16);
 }
-#stop-btn:hover{
+#cancel-btn:hover{
   background-color: #710808;
 }
 .runner-progress{
