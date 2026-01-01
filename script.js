@@ -299,7 +299,7 @@ const workouts = [
         ]
     }
 ];
-if (window.location.pathname.includes("index.html")){
+if (window.location.pathname.includes("index.html") || window.location.pathname === "/" || window.location.pathname.endsWith("/")){
     const currentDay = new Date().getDay();
     const daysArray = document.querySelectorAll(".week-days p");
     const workoutPlans = {0: "Push", 1: "Pull", 2: "Legs", 3: "Rest", 4: "Chest And Back", 5: "Arms", 6: "Rest"};

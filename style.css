@@ -27,7 +27,6 @@ html, body{
 .navlink.active{
     font-size: large;
     color: #4CAF50;
-    border-color: #4CAF50;
     border: 2px solid rgb(0, 120, 8);
     border-radius: 5px;
     margin: 8px;
@@ -82,7 +81,6 @@ margin: 30px 0 30px;
 .navigation{
   min-height: 44px;
   background-color: #2E7D32;
-  border-color: #2E7D32;
   border: 2px solid rgb(0, 120, 8);
   border-radius: 10px;
   padding: 10px;
@@ -186,7 +184,6 @@ font-size: 40px;
 .text-section h4{
   font-size: 18px;
 }
-
 .customize-section{
   display: flex;
   align-items: center;
