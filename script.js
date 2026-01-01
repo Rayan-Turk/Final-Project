@@ -299,7 +299,94 @@ const workouts = [
         ]
     }
 ];
-if (window.location.pathname.includes("workouts.html")){
+if (window.location.pathname.includes("index.html")){
+    const currentDay = new Date().getDay();
+    const daysArray = document.querySelectorAll(".week-days p");
+    const workoutPlans = {0: "Push", 1: "Pull", 2: "Legs", 3: "Rest", 4: "Chest And Back", 5: "Arms", 6: "Rest"};
+
+    daysArray.forEach((day, index) => {
+        if (index === currentDay) {
+            day.style.border = "2px solid rgb(0, 120, 8)";
+            day.style.color = "#4CAF50";
+            day.style.padding = "10px";
+            day.style.borderRadius = "50px";
+
+            const recommendedPlan = document.getElementById("recommended-plan");
+            const planBtn = document.getElementById("plan-btn");
+            const planLink = document.getElementById("plan-link");
+            if(index === 3 || index === 6){
+                recommendedPlan.textContent = "Today's recommended plan is resting"
+                planBtn.style.display = "none";
+                planLink.style.display = "none";
+                return;
+            }
+            recommendedPlan.textContent = `Today's recommended plan is : ${workoutPlans[index]}`;
+            planBtn.addEventListener("click", () => {
+                const plan = [];
+                switch (index) {
+                    case 0:
+                        plan.push(workouts.find(w => w.id === 2));
+                        plan.push(workouts.find(w => w.id === 12));
+                        plan.push(workouts.find(w => w.id === 4));
+                        plan.push(workouts.find(w => w.id === 11));
+                        plan.push(workouts.find(w => w.id === 19));
+                        plan.push(workouts.find(w => w.id === 20));       
+                        plan.push(workouts.find(w => w.id === 27));
+                        localStorage.setItem("plan", JSON.stringify(plan));
+                        planBtn.textContent = "Added";
+                        break;
+                    case 1:
+                        plan.push(workouts.find(w => w.id === 7));
+                        plan.push(workouts.find(w => w.id === 6));
+                        plan.push(workouts.find(w => w.id === 8));
+                        plan.push(workouts.find(w => w.id === 14));
+                        plan.push(workouts.find(w => w.id === 13));
+                        plan.push(workouts.find(w => w.id === 17));
+                        plan.push(workouts.find(w => w.id === 18));
+                        plan.push(workouts.find(w => w.id === 28));
+                        localStorage.setItem("plan", JSON.stringify(plan));
+                        planBtn.textContent = "Added";
+                        break;
+                    case 2:
+                        plan.push(workouts.find(w => w.id === 24));
+                        plan.push(workouts.find(w => w.id === 22));
+                        plan.push(workouts.find(w => w.id === 23));
+                        plan.push(workouts.find(w => w.id === 25));
+                        plan.push(workouts.find(w => w.id === 26));
+                        plan.push(workouts.find(w => w.id === 29));
+                        localStorage.setItem("plan", JSON.stringify(plan));
+                        planBtn.textContent = "Added";
+                        break;
+                    case 4:
+                        plan.push(workouts.find(w => w.id === 1));
+                        plan.push(workouts.find(w => w.id === 10));
+                        plan.push(workouts.find(w => w.id === 2));
+                        plan.push(workouts.find(w => w.id === 6));
+                        plan.push(workouts.find(w => w.id === 4));
+                        plan.push(workouts.find(w => w.id === 7));       
+                        plan.push(workouts.find(w => w.id === 3));
+                        plan.push(workouts.find(w => w.id === 8));
+                        localStorage.setItem("plan", JSON.stringify(plan));
+                        planBtn.textContent = "Added";
+                        break;
+                    case 5:
+                        plan.push(workouts.find(w => w.id === 16));
+                        plan.push(workouts.find(w => w.id === 19));
+                        plan.push(workouts.find(w => w.id === 17));
+                        plan.push(workouts.find(w => w.id === 21));
+                        plan.push(workouts.find(w => w.id === 18));
+                        plan.push(workouts.find(w => w.id === 20));       
+                        plan.push(workouts.find(w => w.id === 13));
+                        localStorage.setItem("plan", JSON.stringify(plan));
+                        planBtn.textContent = "Added";
+                        break;
+                }
+            })
+        }
+    });
+}
+
+else if (window.location.pathname.includes("workouts.html")){
     const container = document.getElementById("workoutContainer");
     const template = document.getElementById("workoutTemplate");
     const filter = document.getElementById("categoryFilter");
