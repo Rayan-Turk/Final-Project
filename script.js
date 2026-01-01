@@ -306,7 +306,55 @@ if (window.location.pathname.includes("workouts.html")){
     const input= document.getElementById("searchInput");
     const counter = document.getElementById("plan-counter");
     const clearBtn = document.getElementById("clear-btn");
+    const pushBtn = document.getElementById("push-btn");
+    const pullBtn = document.getElementById("pull-btn");
+    const legsBtn = document.getElementById("legs-btn");
 
+    pushBtn.addEventListener("click", () => {
+        const plan = []
+
+        plan.push(workouts.find(w => w.id === 2));
+        plan.push(workouts.find(w => w.id === 12));
+        plan.push(workouts.find(w => w.id === 4));
+        plan.push(workouts.find(w => w.id === 11));
+        plan.push(workouts.find(w => w.id === 19));
+        plan.push(workouts.find(w => w.id === 20));
+        plan.push(workouts.find(w => w.id === 27));
+
+        localStorage.setItem("plan", JSON.stringify(plan));
+        updatePlanCounter();
+        renderWorkouts(workouts);
+    });
+    pullBtn.addEventListener("click", () => {
+        const plan = []
+
+        plan.push(workouts.find(w => w.id === 7));
+        plan.push(workouts.find(w => w.id === 6));
+        plan.push(workouts.find(w => w.id === 8));
+        plan.push(workouts.find(w => w.id === 14));
+        plan.push(workouts.find(w => w.id === 13));
+        plan.push(workouts.find(w => w.id === 17));
+        plan.push(workouts.find(w => w.id === 18));
+        plan.push(workouts.find(w => w.id === 28));
+
+        localStorage.setItem("plan", JSON.stringify(plan));
+        updatePlanCounter();
+        renderWorkouts(workouts);
+    });
+    legsBtn.addEventListener("click", () => {
+        const plan = []
+
+        plan.push(workouts.find(w => w.id === 24));
+        plan.push(workouts.find(w => w.id === 22));
+        plan.push(workouts.find(w => w.id === 23));
+        plan.push(workouts.find(w => w.id === 25));
+        plan.push(workouts.find(w => w.id === 26));
+        plan.push(workouts.find(w => w.id === 29));
+
+        localStorage.setItem("plan", JSON.stringify(plan));
+        updatePlanCounter();
+        renderWorkouts(workouts);
+    });
     clearBtn.addEventListener("click", () => {
         localStorage.removeItem("plan");
         document.querySelectorAll(".add-btn").forEach(btn => btn.textContent = "Add");
@@ -326,7 +374,7 @@ if (window.location.pathname.includes("workouts.html")){
         const inputText = input.value.toLowerCase();
   
         let filteredWorkouts = selectedCategory === "all" ? workouts : workouts.filter(workout => workout.category === selectedCategory);
-        filteredWorkouts = inputText === "" ? filteredWorkouts : filteredWorkouts.filter(workout => workout.name.toLowerCase().startsWith(inputText));
+        filteredWorkouts = inputText === "" ? filteredWorkouts : filteredWorkouts.filter(workout => workout.name.toLowerCase().includes(inputText));
         
         renderWorkouts(filteredWorkouts);
     }
@@ -509,7 +557,10 @@ else if (window.location.pathname.includes("planner.html")){
             });
             localStorage.setItem("history", JSON.stringify(history));
             localStorage.removeItem("plan");
-            setTimeout(renderWorkouts, 500);
+            setTimeout(() => {
+                renderWorkouts();
+                updatePlanCounter();
+            }, 500);
             return;
         }
 
@@ -621,7 +672,7 @@ else if (window.location.pathname.includes("history.html")){
 
                 workoutsList.appendChild(card);
             });
-            historyContainer.appendChild(card);
+            historyContainer.prepend(card);
         })
     }
     renderHistory();
