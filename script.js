@@ -444,8 +444,8 @@ else if (window.location.pathname.includes("workouts.html")){
     });
     clearBtn.addEventListener("click", () => {
         localStorage.removeItem("plan");
-        document.querySelectorAll(".add-btn").forEach(btn => btn.textContent = "Add");
         updatePlanCounter();
+        applyFilters();
     });
 
     function updatePlanCounter() {
@@ -481,17 +481,31 @@ else if (window.location.pathname.includes("workouts.html")){
             card.querySelector(".details-link").href = `details.html?id=${workout.id}`;
             const addBtn = card.querySelector(".add-btn");
             if (isInPlan(workout.id)) {
-                addBtn.textContent = "Added";
-            }
-            addBtn.addEventListener("click" , () => {
-                addBtn.textContent = "Added";
-                let plan = JSON.parse(localStorage.getItem("plan")) || [];
-                if(!plan.some(w => w.id === workout.id)){
+                addBtn.textContent = "Remove";
+                addBtn.style.backgroundColor = "#bb0b0b";
+                addBtn.style.borderColor = "rgb(149, 16, 16)";
+
+                addBtn.addEventListener("click", () => {
+                    let plan = JSON.parse(localStorage.getItem("plan")) || [];
+                    plan = plan.filter(w => w.id !== workout.id);
+                    localStorage.setItem("plan", JSON.stringify(plan));
+                    updatePlanCounter();
+                    applyFilters();
+                });
+            } else {
+                addBtn.textContent = "Add";
+                addBtn.style.backgroundColor = "";
+                addBtn.style.borderColor = "";
+
+                addBtn.addEventListener("click" , () => {
+                    let plan = JSON.parse(localStorage.getItem("plan")) || [];
                     plan.push(workout);
                     localStorage.setItem("plan", JSON.stringify(plan));
                     updatePlanCounter();
-                }
-            });
+                    applyFilters();
+
+                });
+            } 
             container.appendChild(card);
         });
     }
@@ -518,20 +532,33 @@ else if (window.location.pathname.includes("details.html")){
             const plan = JSON.parse(localStorage.getItem("plan")) || [];
             return plan.some(w => w.id === id);
         }
+        updateButton();
+        function updateButton() {
         if (isInPlan(workout.id)) {
-            addBtn.textContent = "Added";
-        }
-        addBtn.addEventListener("click" , () => {
-            addBtn.textContent = "Added";
-            let plan = JSON.parse(localStorage.getItem("plan")) || [];
+                addBtn.textContent = "Remove";
+                addBtn.style.backgroundColor = "#bb0b0b";
+                addBtn.style.borderColor = "rgb(149, 16, 16)";
 
-            if(!plan.some(w => w.id === workout.id)){
-                plan.push(workout);
-                localStorage.setItem("plan", JSON.stringify(plan));
-            }
-        });
+                addBtn.addEventListener("click", () => {
+                    let plan = JSON.parse(localStorage.getItem("plan")) || [];
+                    plan = plan.filter(w => w.id !== workout.id);
+                    localStorage.setItem("plan", JSON.stringify(plan));
+                    updateButton();
+                });
+            } else {
+                addBtn.textContent = "Add";
+                addBtn.style.backgroundColor = "";
+                addBtn.style.borderColor = "";
+
+                addBtn.addEventListener("click" , () => {
+                    let plan = JSON.parse(localStorage.getItem("plan")) || [];
+                    plan.push(workout);
+                    localStorage.setItem("plan", JSON.stringify(plan));
+                    updateButton();
+                });
+            } 
+        }
     }
-    
 }
 else if (window.location.pathname.includes("planner.html")){
     const counter = document.getElementById("workouts-counter");
