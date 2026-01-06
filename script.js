@@ -503,7 +503,6 @@ else if (window.location.pathname.includes("workouts.html")){
                     localStorage.setItem("plan", JSON.stringify(plan));
                     updatePlanCounter();
                     applyFilters();
-
                 });
             } 
             container.appendChild(card);
@@ -642,7 +641,7 @@ else if (window.location.pathname.includes("planner.html")){
             currentIndex = 0;
             done = 0;
             skipped = 0;
-
+            startTimer();
             showRunnerUI();
             loadWorkout();
         }
@@ -661,13 +660,15 @@ else if (window.location.pathname.includes("planner.html")){
                 document.getElementById("runner-placeholder").textContent = "Workout Finished";            
                 document.getElementById("runner-placeholder").style.display = "block";
             }, 500)
-            
 
+            stopTimer();
+            const duration = Date.now() - startTime;
             let history = JSON.parse(localStorage.getItem("history")) || [];
             
             history.push({
                 date: new Date().toLocaleString(),
-                workouts: results
+                workouts: results,
+                duration: duration
             });
             localStorage.setItem("history", JSON.stringify(history));
             localStorage.removeItem("plan");
@@ -731,11 +732,36 @@ else if (window.location.pathname.includes("planner.html")){
         done = 0;
         skipped = 0;
         results = [];
+        stopTimer();
         updateProgressBar();
         document.getElementById("runner-card").style.display = "none";
         document.getElementById("runner-placeholder").textContent = "Workout Cancelled";
         document.getElementById("runner-placeholder").style.display = "block";
     })
+    const timer = document.getElementById("runner-timer");
+    let timerInterval;
+    let startTime;
+
+    function startTimer() {
+        stopTimer();
+        startTime = Date.now();
+        timerInterval = setInterval(() => {
+            const elapsedMs = Date.now() - startTime;
+            timer.textContent = formatTime(elapsedMs);
+        }, 10);
+    }
+    function formatTime(ms) {
+        const minutes = Math.floor(ms / 60000);
+        const seconds = Math.floor((ms % 60000) / 1000);
+        const milliseconds = Math.floor((ms % 1000) / 10);
+        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(milliseconds).padStart(2, "0")}`;
+    }
+    function stopTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
 }
 else if (window.location.pathname.includes("history.html")){
     const clearHistoryBtn = document.getElementById("clear-history-btn");
@@ -761,12 +787,18 @@ else if (window.location.pathname.includes("history.html")){
         history.forEach(plan => {
             const date = plan.date;
             const workouts = plan.workouts;
+            const duration = plan.duration;
             const doneWorkouts = workouts.filter(workout => workout.status === "Done");
             const skippedWorkouts = workouts.filter(workout => workout.status === "Skipped");
             
             const card = template.cloneNode(true);
             
-            card.querySelector("#workout-counter").textContent = `${workouts.length} Workouts`;
+            const minutes = Math.floor(duration / 60000);
+            const seconds = Math.floor((duration % 60000) / 1000);
+            const milliseconds = Math.floor((duration % 1000) / 10);
+
+            card.querySelector("#workout-counter").textContent = `${workouts.length} Workouts - Duration : 
+            ${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(milliseconds).padStart(2, "0")}`;
             card.querySelector("#history-info").textContent = `Completed at ${date} - Done : ${doneWorkouts.length} - Skipped : ${skippedWorkouts.length}`;
             const deleteBtn = card.querySelector("#delete-history-btn");
             deleteBtn.addEventListener("click", () => {

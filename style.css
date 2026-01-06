@@ -40,6 +40,7 @@ html, body{
     font-size: 40px;
     color: white;
     margin: 8px;
+    text-decoration: none;
 }
 .section{
     background-color: #1E1E1E;
@@ -523,6 +524,9 @@ font-size: large;
 }
 #runner-workout{
   color: #4CAF50;
+}
+#runner-timer{
+  font-size: 30px;
 }
 #runner-workout-category{
   border: 2px dashed rgb(142,142,142);
