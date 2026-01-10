@@ -444,6 +444,7 @@ else if (window.location.pathname.includes("workouts.html")){
     });
     clearBtn.addEventListener("click", () => {
         localStorage.removeItem("plan");
+        localStorage.removeItem("runnerState");
         updatePlanCounter();
         applyFilters();
     });
@@ -564,6 +565,17 @@ else if (window.location.pathname.includes("planner.html")){
     const clearBtn = document.getElementById("clear-btn");
     let startIndex = null;
 
+    function saveState() {
+        localStorage.setItem("runnerState", JSON.stringify({
+            isRunning: true,
+            currentIndex,
+            done,
+            skipped,
+            results,
+            elapsedMs
+        }));
+    }
+
     function reorderPlan(plan, fromIndex, toIndex) {
         const updated = plan;
         const [moved] = updated.splice(fromIndex, 1);
@@ -652,15 +664,27 @@ else if (window.location.pathname.includes("planner.html")){
     updatePlanCounter();
     clearBtn.addEventListener("click", () => {
         localStorage.removeItem("plan");
+        localStorage.removeItem("runnerState");
+        currentIndex = 0;
+        done = 0;
+        skipped = 0;
+        results = [];
+        elapsedMs = 0;
+        stopTimer();
+        
+        updateProgressBar();
+        document.getElementById("runner-card").style.display = "none";
+        document.getElementById("runner-placeholder").textContent = "Workout Plan Deleted";
+        document.getElementById("runner-placeholder").style.display = "block";
         updatePlanCounter();
         renderWorkouts();
     });
-    const startbtn = document.getElementById("start-plan-btn");
+    const startBtn = document.getElementById("start-plan-btn");
     let currentIndex = 0;
     let done = 0;
     let skipped = 0;
     let results = [];
-    startbtn.addEventListener("click", () => {
+    startBtn.addEventListener("click", () => {
         const plan = JSON.parse(localStorage.getItem("plan")) || [];
         results = [];
         if(plan.length === 0){
@@ -672,6 +696,8 @@ else if (window.location.pathname.includes("planner.html")){
             currentIndex = 0;
             done = 0;
             skipped = 0;
+            elapsedMs = 0;
+            saveState();
             startTimer();
             showRunnerUI();
             loadWorkout();
@@ -693,14 +719,14 @@ else if (window.location.pathname.includes("planner.html")){
             }, 500)
 
             stopTimer();
-            const duration = Date.now() - startTime;
             let history = JSON.parse(localStorage.getItem("history")) || [];
             
             history.push({
                 date: new Date().toLocaleString(),
                 workouts: results,
-                duration: duration
+                duration: elapsedMs
             });
+            localStorage.removeItem("runnerState");
             localStorage.setItem("history", JSON.stringify(history));
             localStorage.removeItem("plan");
             setTimeout(() => {
@@ -733,6 +759,7 @@ else if (window.location.pathname.includes("planner.html")){
 
         done++;
         currentIndex++;
+        saveState();
         loadWorkout();
     });
     const skipBtn = document.getElementById("skip-btn");
@@ -748,6 +775,7 @@ else if (window.location.pathname.includes("planner.html")){
 
         skipped++;
         currentIndex++;
+        saveState();
         loadWorkout();
     })
     function updateProgressBar(){
@@ -759,11 +787,14 @@ else if (window.location.pathname.includes("planner.html")){
     }
     const cancelBtn = document.getElementById("cancel-btn");
     cancelBtn.addEventListener("click", () => {
+        localStorage.removeItem("runnerState");
         currentIndex = 0;
         done = 0;
         skipped = 0;
         results = [];
+        elapsedMs = 0;
         stopTimer();
+        
         updateProgressBar();
         document.getElementById("runner-card").style.display = "none";
         document.getElementById("runner-placeholder").textContent = "Workout Cancelled";
@@ -771,15 +802,23 @@ else if (window.location.pathname.includes("planner.html")){
     })
     const timer = document.getElementById("runner-timer");
     let timerInterval;
-    let startTime;
+    let saveInterval;
+    let elapsedMs = 0;
+    let lastUpdate = null;
 
     function startTimer() {
         stopTimer();
-        startTime = Date.now();
+        lastUpdate = Date.now();
         timerInterval = setInterval(() => {
-            const elapsedMs = Date.now() - startTime;
+            const now = Date.now();
+            elapsedMs += (now - lastUpdate);
+            lastUpdate = now;
             timer.textContent = formatTime(elapsedMs);
         }, 10);
+        saveInterval = setInterval(() => {
+            const state = JSON.parse(localStorage.getItem("runnerState"));
+            if (state && state.isRunning) saveState();
+        }, 100);
     }
     function formatTime(ms) {
         const minutes = Math.floor(ms / 60000);
@@ -792,6 +831,25 @@ else if (window.location.pathname.includes("planner.html")){
             clearInterval(timerInterval);
             timerInterval = null;
         }
+        if (saveInterval) {
+            clearInterval(saveInterval);
+            saveInterval = null;
+        }
+        lastUpdate = null;
+    }
+    const state = JSON.parse(localStorage.getItem("runnerState"));
+
+
+    if (state && state.isRunning) {
+        currentIndex = state.currentIndex || 0;
+        done = state.done || 0;
+        skipped = state.skipped || 0;
+        results = state.results || [];
+        elapsedMs = state.elapsedMs || 0;
+        showRunnerUI();
+        timer.textContent = formatTime(elapsedMs);
+        startTimer();
+        loadWorkout();
     }
 }
 else if (window.location.pathname.includes("history.html")){
