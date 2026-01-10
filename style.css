@@ -429,6 +429,7 @@ font-size: large;
   margin: 15px;
   border: 2px solid rgb(142, 142, 142);
   border-radius: 16px;
+  cursor: grab;
 }
 #planner-workout-card:hover{
   transform: translateY(-4px);

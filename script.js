@@ -562,6 +562,14 @@ else if (window.location.pathname.includes("details.html")){
 else if (window.location.pathname.includes("planner.html")){
     const counter = document.getElementById("workouts-counter");
     const clearBtn = document.getElementById("clear-btn");
+    let startIndex = null;
+
+    function reorderPlan(plan, fromIndex, toIndex) {
+        const updated = plan;
+        const [moved] = updated.splice(fromIndex, 1);
+        updated.splice(toIndex, 0, moved);
+        return updated;
+    }
 
     function renderWorkouts(){
         let plan = JSON.parse(localStorage.getItem("plan")) || [];
@@ -582,6 +590,29 @@ else if (window.location.pathname.includes("planner.html")){
             card.querySelector("#planner-workout-name").textContent = workout.name;
             card.querySelector("#planner-workout-category").textContent = workout.category;
             
+            card.draggable = true;
+            card.dataset.index = index;
+            card.addEventListener("dragstart", () => {
+                startIndex = Number(card.dataset.index);
+            });
+
+            card.addEventListener("dragover", (e) => {
+                e.preventDefault();
+            });
+
+            card.addEventListener("drop", (e) => {
+                e.preventDefault();
+                const endIndex = Number(card.dataset.index);
+                
+                if (startIndex === null || startIndex === endIndex) return;
+                let plan = JSON.parse(localStorage.getItem("plan")) || [];
+                plan = reorderPlan(plan, startIndex, endIndex);
+                localStorage.setItem("plan", JSON.stringify(plan));
+
+                startIndex = null;
+                renderWorkouts();
+            });
+
             const upBtn = card.querySelector("#up-btn");
             index === 0 ? upBtn.disabled = true : upBtn.disabled = false;
             
